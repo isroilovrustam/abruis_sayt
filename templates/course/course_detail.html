@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ course.title }} - Abruisdev{% endblock %}
+
+{% block meta_description %}{{ course.description|truncatewords:30 }}{% endblock %}
+
+{% block content %}
+    <section class="courses-page">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb" aria-label="Navigatsiya">
+                <a href="/">
+                    <i class="fas fa-home"></i> Bosh sahifa
+                </a>
+                <span><i class="fas fa-chevron-right"></i></span>
+                <a href="/course/">Kurslar</a>
+                <span><i class="fas fa-chevron-right"></i></span>
+                <span class="current">{{ course.title|truncatewords:5 }}</span>
+            </nav>
+
+            <!-- Course Header -->
+            <div class="course-header-detail">
+                <div class="course-header-top">
+                    <div class="course-title-section">
+                        <h1 class="course-detail-title">{{ course.title }}</h1>
+                        <p class="course-subtitle">{{ course.short_description|default:'Professional dasturlash kursi - amaliy loyihalar bilan' }}</p>
+                        <div class="course-badges">
+                        <span class="badge badge-category">
+                            <i class="fas fa-folder"></i> {{ course.category.name|default:'Umumiy' }}
+                        </span>
+                            <span class="badge badge-level">
+                            <i class="fas fa-signal"></i> {{ course.get_level_display|default:"Boshlang'ich" }}
+                        </span>
+                            {% if course.lessons_count %}
+                                <span class="badge badge-category">
+                            <i class="fas fa-video"></i> {{ course.lessons_count }} dars
+                        </span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if not is_enrolled %}
+                        <div class="price-section">
+                            <div class="price-label">Kurs narxi</div>
+                            <div class="price-value">
+                                {% if course.price == 0 %}
+                                    <span class="free-price">BEPUL</span>
+                                {% else %}
+                                    {{ course.price|floatformat:0 }} so'm
+                                {% endif %}
+                            </div>
+                            <span onclick="openTelegramModal()" class="btn-telegram-primary">
+                            <i class="fab fa-telegram"></i>
+                            Telegram orqali murojaat
+                        </span>
+                        </div>
+                    {% else %}
+                        <div class="price-section"
+                             style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%); border-color: rgba(16, 185, 129, 0.2);">
+                            <div class="price-label" style="color: var(--success-color);">
+                                <i class="fas fa-check-circle"></i> Siz ro'yxatdan o'tgansiz
+                            </div>
+                            <div class="price-value" style="color: var(--success-color); font-size: 1.5rem;">
+                                Barcha darslar ochiq
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Content Wrapper -->
+            <div class="content-wrapper">
+                <!-- Main Content - Lessons -->
+                <main>
+                    <div class="tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" onclick="switchTab('curriculum', this)">
+                                <i class="fas fa-list"></i> Darslar
+                            </button>
+                            <button class="tab-btn" onclick="switchTab('description', this)">
+                                <i class="fas fa-info-circle"></i> Tavsif
+                            </button>
+                        </div>
+
+                        <!-- Curriculum Tab -->
+                        <div id="curriculum" class="tab-content active">
+                            <h3 class="section-title">
+                                <i class="fas fa-list"></i>
+                                Kurs dasturi
+                                <span style="margin-left: auto; font-size: 0.9rem; font-weight: 500; color: var(--text-lighter);">
+                                {{ all_lessons.count|default:0 }} ta dars
+                            </span>
+                            </h3>
+                            <div class="modules-list">
+                                {% for lesson in all_lessons %}
+                                    <div class="module-item">
+                                        <div class="lesson-info">
+                                            {% if lesson.is_free or is_enrolled %}
+                                                <a href="{% url 'lesson_view' course.id lesson.id %}" class="btn-play">
+                                                    <span class="lesson-number">{{ lesson.order }}</span>
+                                                </a>
+                                            {% else %}
+                                                <span class="lesson-number" style="background: var(--text-lighter);">
+                                                {{ lesson.order }}
+                                            </span>
+                                            {% endif %}
+                                            <div>
+                                                {% if lesson.is_free or is_enrolled %}
+                                                    <a href="{% url 'lesson_view' course.id lesson.id %}"
+                                                       class="btn-play">
+                                                        <span class="lesson-title">{{ lesson.title }}</span>
+                                                    </a>
+                                                {% else %}
+                                                    <span class="lesson-title"
+                                                          style="color: var(--text-lighter);">{{ lesson.title }}</span>
+                                                {% endif %}
+                                                <span class="lesson-duration">
+                                                <i class="fas fa-clock"></i> {{ lesson.duration_formatted|default:"10 daqiqa" }}
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <span class="lesson-status {% if lesson.is_free or is_enrolled %}free{% else %}locked{% endif %}">
+                                        {% if lesson.is_free %}
+                                            <a href="{% url 'lesson_view' course.id lesson.id %}" class="btn-play"
+                                               style="color: var(--success-color);">
+                                                <i class="fas fa-play-circle"></i> Bepul
+                                            </a>
+                                        {% elif is_enrolled %}
+                                            <a href="{% url 'lesson_view' course.id lesson.id %}" class="btn-play"
+                                               style="color: var(--primary-color);">
+                                                <i class="fas fa-play-circle"></i> Ko'rish
+                                            </a>
+                                        {% else %}
+                                            <button class="btn-play" onclick="openTelegramModal()"
+                                                    style="color: var(--warning-color);">
+                                                <i class="fas fa-lock"></i> Premium
+                                            </button>
+                                        {% endif %}
+                                    </span>
+                                    </div>
+                                {% empty %}
+                                    <div class="empty-state" style="padding: 2rem;">
+                                        <i class="fas fa-video-slash" style="font-size: 2.5rem;"></i>
+                                        <h3>Darslar hali yuklanmagan</h3>
+                                        <p>Tez orada darslar qo'shiladi</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Description Tab -->
+                        <div id="description" class="tab-content">
+                            <h3 class="section-title">
+                                <i class="fas fa-info-circle"></i>
+                                Kurs haqida
+                            </h3>
+                            <div class="course-description-content" style="line-height: 1.8; color: var(--text-light);">
+                                {{ course.description|default:'Bu kurs orqali siz professional dasturchi bo\'lish yo\'lida birinchi qadamlaringizni qo\'yasiz. Kurs davomida nazariy bilimlar bilan bir qatorda amaliy loyihalar ustida ishlaysiz.'|linebreaks }}
+                                        </div>
+
+                                        {% if course.requirements %}
+                                            <h4 style="margin-top: 2rem; margin-bottom: 1rem;">
+                                                <i class="fas fa-clipboard-list"
+                                                   style="color: var(--primary-color);"></i>
+                                                Talablar
+                                            </h4>
+                                            <ul style="list-style: disc; padding-left: 1.5rem; color: var(--text-light);">
+                                                {% for req in course.requirements_list %}
+                                                    <li style="margin-bottom: 0.5rem;">{{ req }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                            </div>
+                        </div>
+                </main>
+
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- Course Info -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-info-circle"></i>
+                            Kurs ma'lumotlari
+                        </h3>
+                        <div class="info-list">
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Umumiy: {{ course.total_hours|default:0 }} soat</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-video"></i>
+                                <span>{{ course.lessons_count|default:0 }} ta video dars</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-signal"></i>
+                                <span>Daraja: {{ course.get_level_display|default:"Boshlang'ich" }}</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-infinity"></i>
+                                <span>Umrbod foydalanish</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>Mobil qurilmalarda ko'rish</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instructor -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-user-tie"></i>
+                            O'qituvchi
+                        </h3>
+                        <div class="instructor-info">
+                            <div class="instructor-avatar">
+                                {% if course.instructor.avatar %}
+                                    <img src="{{ course.instructor.avatar.url }}" alt="O'qituvchi">
+                                {% else %}
+                                    AD
+                                {% endif %}
+                            </div>
+                            <div class="instructor-details">
+                                <h4>{{ course.instructor.name|default:'Abruisdev Team' }}</h4>
+                                <p>{{ course.instructor.title|default:'Developer' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Share -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-share-alt"></i>
+                            Do'stlaringizga ulashing
+                        </h3>
+                        <div class="share-buttons" style="display: flex; gap: 8px;">
+                            <!-- Facebook -->
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}"
+                               target="_blank"
+                               class="btn"
+                               style="flex: 1; padding: 0.75rem; background: #1877F2; color: white; text-align: center; border-radius: 8px;">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+
+                            <!-- Telegram -->
+                            <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ course.title|urlencode }}"
+                               target="_blank"
+                               class="btn"
+                               style="flex: 1; padding: 0.75rem; background: #0088cc; color: white; text-align: center; border-radius: 8px;">
+                                <i class="fab fa-telegram-plane"></i>
+                            </a>
+
+                            <!-- WhatsApp -->
+                            <a href="https://api.whatsapp.com/send?text={{ course.title|urlencode }}%20{{ request.build_absolute_uri }}"
+                               target="_blank"
+                               class="btn"
+                               style="flex: 1; padding: 0.75rem; background: #25D366; color: white; text-align: center; border-radius: 8px;">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+
+                            <!-- Instagram (copy + redirect) -->
+                            <button onclick="shareToInstagram()"
+                                    class="btn"
+                                    style="flex: 1; padding: 0.75rem; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; border: none; cursor: pointer; text-align: center; border-radius: 8px;">
+                                <i class="fab fa-instagram"></i>
+                            </button>
+
+                            <!-- Copy Link -->
+                            <button onclick="copyLink()"
+                                    class="btn"
+                                    style="flex: 1; padding: 0.75rem; background: #6c757d; color: white; border: none; cursor: pointer; text-align: center; border-radius: 8px;">
+                                <i class="fas fa-link"></i>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!-- Support -->
+                    <div class="sidebar-card"
+                         style="background: linear-gradient(135deg, rgba(0, 136, 204, 0.1) 0%, rgba(0, 166, 237, 0.1) 100%); border-color: rgba(0, 136, 204, 0.2);">
+                        <h3 class="sidebar-title" style="color: #0088cc;">
+                            <i class="fab fa-telegram"></i>
+                            Yordam kerakmi?
+                        </h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 1rem;">Savollaringiz bo'lsa, Telegram orqali
+                            yozing!</p>
+                        <a href="https://t.me/abruisdev" target="_blank" class="btn btn-telegram" style="width: 100%;">
+                            <i class="fab fa-telegram"></i> @abruisdev
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- Telegram Modal -->
+    <div id="telegramModal" class="modal">
+        <div class="modal-content" style="text-align: center; padding: 2.5rem;">
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #0088cc 0%, #00a6ed 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                <i class="fab fa-telegram" style="font-size: 2.5rem; color: white;"></i>
+            </div>
+            <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem;">Premium kursga yozilish</h3>
+            <p style="color: var(--text-light); margin-bottom: 2rem; line-height: 1.6;">
+                Kursning barcha darslarini ochish va umrbod foydalanish huquqiga ega bo'lish uchun Telegram orqali
+                murojaat qiling
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <a href="https://t.me/abruisdev" target="_blank" class="btn btn-telegram btn-lg" style="width: 100%;">
+                    <i class="fab fa-telegram"></i> Telegram'ga o'tish
+                </a>
+                <button onclick="closeTelegramModal()" class="btn btn-secondary" style="width: 100%;">
+                    <i class="fas fa-times"></i> Yopish
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function shareToInstagram() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('✅ Link nusxalandi!\nInstagram story yoki postga qo\'shing.');
+            });
+        }
+
+        function copyLink() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('✅ Link nusxalandi!');
+            });
+        }
+    </script>
+
+{% endblock %}

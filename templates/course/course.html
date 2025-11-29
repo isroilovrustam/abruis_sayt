@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Barcha Kurslar - Abruisdev{% endblock %}
+
+{% block meta_description %}Professional dasturlash kurslarining to'liq ro'yxati. Python, Django, REST API va boshqa texnologiyalar bo'yicha kurslar.{% endblock %}
+
+{% block content %}
+<section class="courses-page">
+    <div class="container">
+        <div class="courses-header">
+            <span class="section-badge">Barcha Kurslar</span>
+            <h1>O'zingizga Mos <span class="highlight">Kursni Tanlang</span></h1>
+            <p>{{ courses.count|default:'15+' }} ta professional kurs mavjud. Har biri amaliy loyihalar bilan</p>
+        </div>
+
+        <div class="results-info">
+            <span id="resultsCount">{{ courses.count }} ta kurs topildi</span>
+        </div>
+
+        <div class="courses-list" id="coursesList">
+            {% for course in courses %}
+                <div class="course-card" onclick="goToCourse({{ course.id }})">
+                    <div class="course-thumbnail">
+                        {% if course.image %}
+                            <img src="{{ course.image.url }}" alt="{{ course.title }}">
+                        {% else %}
+                            <div class="course-placeholder">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                        {% endif %}
+                        <span class="course-badge difficulty">{{ course.get_level_display|default:"Boshlang'ich" }}</span>
+                    </div>
+                    <div class="course-body">
+                        <span class="course-category">{{ course.category.name|default:'Umumiy' }}</span>
+                        <h3>{{ course.title }}</h3>
+                        <p>{{ course.short_description|default:'Professional kurs' }}</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-video"></i> {{ course.lessons_count|default:0 }} dars</span>
+                            <span><i class="fas fa-clock"></i> {{ course.total_duration_formatted }}</span>
+                            <span><i class="fas fa-users"></i> {{ course.enrollments.count|default:0 }} o'quvchi</span>
+                        </div>
+                        <div class="course-footer">
+                            <div>
+                                {% if course.price == 0 %}
+                                    <span class="free-price">BEPUL</span>
+                                {% else %}
+                                    <div class="course-price">{{ course.price|floatformat:0 }} so'm</div>
+                                {% endif %}
+                            </div>
+                            <div class="course-action">Batafsil</div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Hozircha kurslar mavjud emas</h3>
+                    <p>Tez orada yangi kurslar qo'shiladi</p>
+                </div>
+            {% endfor %}
+        </div>
+
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    window.COURSE_DETAIL_URL = "{% url 'course_detail' 999999 %}".replace('999999', '').replace(/\/$/, '');
+</script>
+{% endblock %}

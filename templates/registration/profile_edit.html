@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profilni Tahrirlash - Abruisdev{% endblock %}
+
+{% block content %}
+<section class="courses-page">
+    <div class="container">
+        <div class="courses-header">
+            <span class="section-badge">Profil</span>
+            <h1>Profilni <span class="highlight">Tahrirlash</span></h1>
+        </div>
+
+        <div style="max-width: 700px; margin: 0 auto;">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}" style="margin-bottom: 1rem;">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data" class="sidebar-card">
+                {% csrf_token %}
+
+                <!-- Avatar -->
+                <div style="text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color);">
+                    <div class="instructor-avatar" style="width: 100px; height: 100px; margin: 0 auto 1rem; font-size: 2.5rem;">
+                        {% if user.profile.avatar %}
+                            <img src="{{ user.profile.avatar.url }}" id="avatarPreview" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        {% else %}
+                            <span id="avatarInitials">{{ user.first_name|first|default:'U' }}{{ user.last_name|first }}</span>
+                        {% endif %}
+                    </div>
+                    <label for="id_avatar" class="btn btn-secondary" style="cursor: pointer;">
+                        <i class="fas fa-camera"></i> Rasmni O'zgartirish
+                    </label>
+                    <input type="file" id="id_avatar" name="avatar" accept="image/*" style="display: none;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Ism</label>
+                        <input type="text" name="first_name" value="{{ user.first_name }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Familiya</label>
+                        <input type="text" name="last_name" value="{{ user.last_name }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" value="{{ user.email }}">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Telefon</label>
+                        <input type="tel" name="phone" value="{{ user.profile.phone|default:'' }}" placeholder="+998 90 123 45 67">
+                    </div>
+                    <div class="form-group">
+                        <label>Joylashuv</label>
+                        <input type="text" name="location" value="{{ user.profile.location|default:'' }}" placeholder="Toshkent">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>O'zingiz haqingizda</label>
+                    <textarea name="bio" rows="3">{{ user.profile.bio|default:'' }}</textarea>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: flex-end;">
+                    <a href="{% url 'profile' %}" class="btn btn-secondary">Bekor qilish</a>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

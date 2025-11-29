@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profil - {{ user.get_full_name }} | Abruisdev{% endblock %}
+
+{% block content %}
+<section class="courses-page">
+    <div class="container">
+        <!-- Profile Header -->
+        <div class="sidebar-card" style="margin-bottom: 2rem;">
+            <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+                <div class="instructor-avatar" style="width: 100px; height: 100px; font-size: 2.5rem;">
+                    {% if user.profile.avatar %}
+                        <img src="{{ user.profile.avatar.url }}" alt="{{ user.get_full_name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                    {% else %}
+                        {{ user.first_name|first|default:'U' }}{{ user.last_name|first }}
+                    {% endif %}
+                </div>
+                <div style="flex: 1;">
+                    <h1 style="font-size: 1.75rem; margin-bottom: 0.5rem;">{{ user.get_full_name|default:user.username }}</h1>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">{{ user.email }}</p>
+                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                        <span class="badge badge-level"><i class="fas fa-user"></i> {{ user.username }}</span>
+                        <span class="badge badge-category"><i class="fas fa-calendar"></i> {{ user.date_joined|date:"d.m.Y" }}</span>
+                    </div>
+                </div>
+                <a href="{% url 'profile_edit' %}" class="btn btn-outline">
+                    <i class="fas fa-edit"></i> Tahrirlash
+                </a>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 320px; gap: 2rem;">
+            <!-- Main Content -->
+            <main>
+                <!-- My Courses -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title"><i class="fas fa-book"></i> Mening Kurslarim</h3>
+
+                    {% if enrolled_courses %}
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            {% for enrollment in enrolled_courses %}
+                                <div class="module-item" onclick="goToCourse({{ enrollment.course.id }})" style="cursor: pointer;">
+                                    <div class="lesson-info">
+                                        <div class="lesson-number" style="width: 50px; height: 50px; font-size: 1.25rem;">
+                                            {% if enrollment.course.image %}
+                                                <img src="{{ enrollment.course.image.url }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                                            {% else %}
+                                                <i class="fas fa-graduation-cap"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <span class="lesson-title">{{ enrollment.course.title }}</span>
+                                            <span class="lesson-duration">{{ enrollment.course.lessons_count }} dars • {{ enrollment.progress|default:0 }}% tugatildi</span>
+                                        </div>
+                                    </div>
+                                    <span class="lesson-status free"><i class="fas fa-play"></i></span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state" style="padding: 2rem;">
+                            <i class="fas fa-book-open" style="font-size: 2.5rem; color: var(--text-lighter); margin-bottom: 1rem;"></i>
+                            <h3>Hali kurslar yo'q</h3>
+                            <p style="margin-bottom: 1rem;">Birinchi kursingizni tanlang</p>
+                            <a href="/course/" class="btn btn-primary"><i class="fas fa-search"></i> Kurslarni Ko'rish</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </main>
+
+            <!-- Sidebar -->
+            <aside>
+                <!-- Stats -->
+                <div class="sidebar-card" style="margin-bottom: 1.5rem;">
+                    <h3 class="sidebar-title"><i class="fas fa-chart-bar"></i> Statistika</h3>
+                    <div class="info-list">
+                        <div class="info-item">
+                            <i class="fas fa-book" style="color: var(--primary-color);"></i>
+                            <span>{{ enrolled_courses_count|default:0 }} ta kurs</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                            <span>{{ completed_courses_count|default:0 }} ta tugatilgan</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-clock" style="color: var(--info-color);"></i>
+                            <span>{{ total_hours|default:0 }} soat</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title"><i class="fas fa-cog"></i> Sozlamalar</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="{% url 'profile_edit' %}" class="btn btn-secondary" style="width: 100%;">
+                            <i class="fas fa-edit"></i> Profilni Tahrirlash
+                        </a>
+                        <a href="{% url 'logout' %}" class="btn" style="width: 100%; background: var(--danger-color); color: white;">
+                            <i class="fas fa-sign-out-alt"></i> Chiqish
+                        </a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}

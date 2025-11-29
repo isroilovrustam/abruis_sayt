@@ -1,0 +1,434 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Abruisdev - Online Dasturlash Kurslari{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="hero-bg-animation"></div>
+    <div class="particles">
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+    </div>
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>{{ total_students|default:0 }}+ Mamnun Talabalar</span>
+                </div>
+                <h1>
+                    Professional Dasturlashni
+                    <span class="gradient-text">Onlayn O'rganing</span>
+                </h1>
+                <p class="hero-description">
+                    Zamonaviy texnologiyalar bo'yicha amaliy kurslar. Tajribali mentorlar bilan real loyihalar
+                    ustida ishlang va IT sohasida karyerangizni boshlang.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#courses" class="btn btn-primary btn-glow">
+                        <i class="fas fa-rocket"></i> Kurslarni Ko'rish
+                    </a>
+                    <a href="https://t.me/abruisdev" target="_blank" class="btn btn-telegram">
+                        <i class="fab fa-telegram"></i> Telegram
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-number">{{ total_students|default:0 }}+</span>
+                            <span class="stat-label">Talabalar</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-play-circle"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-number">{{ total_courses|default:0 }}+</span>
+                            <span class="stat-label">Kurslar</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-code"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-number">{{ total_portfolios|default:0 }}+</span>
+                            <span class="stat-label">Loyihalar</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-image-wrapper">
+                    <img src="{% static 'image/abruis.jpg' %}" alt="Abruisdev"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="hero-placeholder" style="display: none;">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <div class="floating-card card-1">
+                        <i class="fab fa-python"></i>
+                        <span>Python</span>
+                    </div>
+                    <div class="floating-card card-2">
+                        <i class="fab fa-windows"></i>
+                        <span>Django</span>
+                    </div>
+{#                    <div class="floating-card card-2">#}
+{#                        <i class="fab fa-windows"></i>#}
+{#                        <span>JavaScript</span>#}
+{#                    </div>#}
+                    <div class="floating-card card-3">
+                        <i class="fab fa-telegram-plane"></i>
+                        <span>Telegram Bot</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-indicator">
+        <span>Pastga suring</span>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section" id="about">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-image">
+                <div class="about-image-wrapper">
+                    <img src="{% static 'image/abruis.jpg' %}" alt="Abruisdev - Web Developer"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="about-image-placeholder" style="display: none;">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                </div>
+                <div class="experience-badge">
+                    <span class="number">3+</span>
+                    <span class="text">Yillik Tajriba</span>
+                </div>
+            </div>
+            <div class="about-text">
+                <span class="section-badge">
+                    <i class="fas fa-user"></i> Men haqimda
+                </span>
+                <h2>Salom, men <span class="gradient-text">Abruisdev</span></h2>
+                <p class="lead">
+                    Full-Stack Web Developer sifatida 3+ yillik tajribaga egaman. Python, Django, JavaScript va
+                    zamonaviy web texnologiyalari bo'yicha ixtisoslashganman.
+                </p>
+                <p>
+                    Mening maqsadim - sifatli ta'lim orqali yangi dasturchilarni tayyorlash va ularni IT sohasida
+                    muvaffaqiyatli karyera qilishlariga yordam berish. Har bir kurs amaliy loyihalar va real
+                    tajribaga asoslangan.
+                </p>
+                <div class="skills-tags">
+                    <span class="skill-tag"><i class="fab fa-python"></i> Python</span>
+                    <span class="skill-tag"><i class="fab fa-js-square"></i> JavaScript</span>
+                    <span class="skill-tag"><i class="fas fa-leaf"></i> Django</span>
+                    <span class="skill-tag"><i class="fab fa-react"></i> React</span>
+                    <span class="skill-tag"><i class="fas fa-database"></i> PostgreSQL</span>
+                    <span class="skill-tag"><i class="fab fa-docker"></i> Docker</span>
+                </div>
+                <div class="about-buttons">
+                    <a href="https://t.me/abruisdev" target="_blank" class="btn btn-primary">
+                        <i class="fab fa-telegram"></i> Bog'lanish
+                    </a>
+                    <a href="#portfolio" class="btn btn-outline">
+                        <i class="fas fa-briefcase"></i> Loyihalarim
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section" id="features">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge"><i class="fas fa-star"></i> Afzalliklar</span>
+            <h2>Nega <span class="gradient-text">Abruisdev</span>?</h2>
+            <p>Bizning platformamiz orqali o'rganish qulay va samarali</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h3>HD Video Darslar</h3>
+                <p>Yuqori sifatli video darslar bilan har bir tushunchani chuqur o'rganing</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-infinity"></i>
+                </div>
+                <h3>Umrbod Kirish</h3>
+                <p>Sotib olingan kurslarga istalgan vaqtda kirish imkoniyati</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fab fa-telegram"></i>
+                </div>
+                <h3>Telegram Qo'llab-quvvatlash</h3>
+                <p>Tezkor yordam va javoblar Telegram orqali 24/7</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <h3>Amaliy Loyihalar</h3>
+                <p>Real loyihalar ustida ishlash orqali tajriba ortiring</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Courses Section -->
+<section class="courses-section" id="courses">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge"><i class="fas fa-graduation-cap"></i> Kurslar</span>
+            <h2>Mashhur <span class="gradient-text">Kurslar</span></h2>
+            <p>O'zingizga mos kursni tanlang va bugun o'rganishni boshlang</p>
+        </div>
+
+        <div class="courses-grid">
+            {% for course in courses %}
+                <div class="course-card" onclick="goToCourse({{ course.id }})">
+                    <div class="course-image">
+                        {% if course.image %}
+                            <img src="{{ course.image.url }}" alt="{{ course.title }}">
+                        {% else %}
+                            <div class="course-placeholder">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                        {% endif %}
+{#                        <span class="course-badge">{{ course.get_level_display }}</span>#}
+                        {% if course.price == 0 %}
+                            <span class="course-badge-free">BEPUL</span>
+                        {% endif %}
+                    </div>
+                    <div class="course-content">
+                        <span class="course-category">
+                            <i class="fas fa-folder"></i> {{ course.category.name|default:'Dasturlash' }}
+                        </span>
+                        <h3 class="course-title">{{ course.title }}</h3>
+                        <p class="course-description">{{ course.short_description|default:course.description|truncatewords:15 }}</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> {{ course.total_hours|default:0 }} soat</span>
+                            <span><i class="fas fa-play-circle"></i> {{ course.lessons_count|default:0 }} dars</span>
+                            <span><i class="fas fa-users"></i> {{ course.enrollments.count }}</span>
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-price">
+                                {% if course.price == 0 %}
+                                    <span class="free-price">BEPUL</span>
+                                {% else %}
+                                    {{ course.price|floatformat:0 }} so'm
+                                {% endif %}
+                            </div>
+                            <span class="course-action">
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty-state" style="grid-column: 1/-1;">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Tez orada yangi kurslar</h3>
+                    <p>Yangi kurslar qo'shilmoqda</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="section-footer">
+            <a href="{% url 'course' %}" class="btn btn-outline btn-lg">
+                <i class="fas fa-th-list"></i> Barcha Kurslarni Ko'rish
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Section -->
+<section class="portfolio-section" id="portfolio">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge"><i class="fas fa-briefcase"></i> Portfolio</span>
+            <h2>Oxirgi <span class="gradient-text">Loyihalar</span></h2>
+            <p>Real loyihalar va ishlanmalar</p>
+        </div>
+
+        <div class="portfolio-grid">
+            {% for portfolio in portfolios %}
+                <article class="portfolio-card">
+                    <div class="portfolio-image">
+                        {% if portfolio.image %}
+                            <img src="{{ portfolio.image.url }}" alt="{{ portfolio.title }}" loading="lazy">
+                        {% else %}
+                            <div class="portfolio-placeholder">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                        {% endif %}
+                        <div class="portfolio-overlay">
+                            <div class="overlay-buttons">
+                                {% if portfolio.get_demo_url and portfolio.get_demo_url != '#' %}
+                                    <a href="{{ portfolio.get_demo_url }}" target="_blank" rel="noopener noreferrer"
+                                       class="overlay-btn" title="Demo ko'rish">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                {% endif %}
+                                {% if portfolio.get_github_url and portfolio.get_github_url != '#' %}
+                                    <a href="{{ portfolio.get_github_url }}" target="_blank"
+                                       rel="noopener noreferrer" class="overlay-btn" title="GitHub">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <span class="portfolio-category">{{ portfolio.category.title|default:'WEB'|upper }}</span>
+                        <h3 class="portfolio-title">{{ portfolio.title }}</h3>
+                        <p class="portfolio-description">{{ portfolio.description|truncatewords:12 }}</p>
+                        <div class="portfolio-tech">
+                            {% for tech in portfolio.get_technologies_list|slice:":4" %}
+                                <span class="tech-tag">{{ tech }}</span>
+                            {% empty %}
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">Django</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="empty-state" style="grid-column: 1/-1;">
+                    <i class="fas fa-folder-open"></i>
+                    <h3>Tez orada loyihalar</h3>
+                    <p>Yangi loyihalar qo'shilmoqda</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="section-footer">
+            <a href="{% url 'portfolio' %}" class="btn btn-outline btn-lg">
+                <i class="fas fa-briefcase"></i> Barcha Loyihalarni Ko'rish
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section - Light & Dark Mode Optimized -->
+<section class="cta-section" id="contact">
+    <div class="cta-pattern"></div>
+    <div class="container">
+        <div class="cta-content">
+            <div class="cta-grid">
+                <div class="cta-text">
+                    <h2>Loyiha yoki Hamkorlik <span class="gradient-text">Taklifi</span> Bormi?</h2>
+                    <p>
+                        Professional web yechimlar, maxsus loyihalar yoki ta'lim bo'yicha hamkorlik uchun
+                        men bilan bog'laning. Har bir murojaatga e'tibor bilan yondashaman.
+                    </p>
+                    <div class="cta-features-list">
+                        <div class="cta-feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Tezkor va professional javob</span>
+                        </div>
+                        <div class="cta-feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Bepul maslahat va loyiha tahlili</span>
+                        </div>
+                        <div class="cta-feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Sifatli natija kafolati</span>
+                        </div>
+                    </div>
+                    <div class="cta-buttons">
+                        {% if not user.is_authenticated %}
+                        <a href="{% url 'register' %}" class="btn-cta-primary">
+                            <i class="fas fa-user-plus"></i> Ro'yxatdan O'tish
+                        </a>
+                            {% else %}
+                            <a href="{% url 'portfolio' %}" class="btn-cta-primary">
+                            <i class="fas fa-briefcase"></i>Loyihalarni Ko'rish
+                        </a>
+
+                        {% endif %}
+                        <a href="{% url 'course' %}" class="btn-cta-primary">
+                            <i class="fas fa-book"></i> Kurslarni Ko'rish
+                        </a>
+                    </div>
+                </div>
+
+                <div class="cta-contact-card">
+                    <div class="contact-card-header">
+                        <div class="contact-icon">
+                            <i class="fab fa-telegram"></i>
+                        </div>
+                        <div>
+                            <h3>Bog'lanish</h3>
+                            <p>Quyidagi kanallar orqali yozing</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-options">
+                        <a href="https://t.me/abruisdev" target="_blank" class="contact-option telegram">
+                            <i class="fab fa-telegram"></i>
+                            <span>@abruisdev</span>
+                            <i class="fas fa-arrow-right arrow"></i>
+                        </a>
+                        <a href="mailto:info@abruisdev.uz" class="contact-option">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@abruisdev.uz</span>
+                            <i class="fas fa-arrow-right arrow"></i>
+                        </a>
+                        <a href="https://github.com/abruisdev" target="_blank" class="contact-option">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub Profile</span>
+                            <i class="fas fa-arrow-right arrow"></i>
+                        </a>
+                    </div>
+
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <i class="fas fa-bolt"></i>
+                            <span>Tezkor javob</span>
+                        </div>
+                        <div class="trust-badge">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Ishonchli</span>
+                        </div>
+                        <div class="trust-badge">
+                            <i class="fas fa-clock"></i>
+                            <span>24/7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    window.COURSE_DETAIL_URL = "{% url 'course_detail' 999999 %}".replace('999999', '').replace(/\/$/, '');
+
+    function goToCourse(id) {
+        window.location.href = window.COURSE_DETAIL_URL + id + '/';
+    }
+</script>
+{% endblock %}

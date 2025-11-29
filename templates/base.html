@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+          content="{% block meta_description %}Abruisdev - Professional dasturlash kurslarini onlayn o'rganing{% endblock %}">
+    <meta name="keywords" content="dasturlash, python, django, web development, online kurslar">
+    <meta name="author" content="Abruisdev">
+    <meta name="theme-color" content="#4F46E5">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{% block og_title %}Abruisdev - Online Dasturlash Kurslari{% endblock %}">
+    <meta property="og:description"
+          content="{% block og_description %}Professional dasturlash kurslarini onlayn o'rganing{% endblock %}">
+    <meta property="og:type" content="website">
+
+    <title>{% block title %}Abruisdev{% endblock %}</title>
+
+    <!-- Favicon -->
+{#    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">#}
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block announcement %}{% endblock %}
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock %}
+
+<!-- Scroll to Top Button -->
+<button class="scroll-top" id="scrollTop" aria-label="Yuqoriga">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- Main Scripts -->
+<script src="{% static 'js/script.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

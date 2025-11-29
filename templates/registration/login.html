@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirish - Abruisdev</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<div class="auth-container">
+    <div class="auth-card">
+        <a href="/" class="back-home"><i class="fas fa-arrow-left"></i> Bosh sahifa</a>
+
+        <div class="auth-header">
+            <div class="auth-logo"><i class="fas fa-code"></i></div>
+            <h1>Xush kelibsiz!</h1>
+            <p>O'z hisobingizga kiring</p>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form class="auth-form" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username">Foydalanuvchi nomi</label>
+                <input type="text" id="id_username" name="username" placeholder="username" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="id_password">Parol</label>
+                <input type="password" id="id_password" name="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-sign-in-alt"></i> Kirish
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Hisobingiz yo'qmi? <a href="/register/">Ro'yxatdan o'tish</a></p>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
